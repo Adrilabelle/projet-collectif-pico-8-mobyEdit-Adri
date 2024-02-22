@@ -9,7 +9,7 @@ end
 
 function _update()
 	player_movement()
-	if(btnp(❎)) shoot()
+	update_shoot()
 	update_bullets()
 	update_bulles()
 --	update_camera()
@@ -20,17 +20,12 @@ cls()
 draw_map()
 draw_player()
 
---baleine
---spr(1,p.x,p.y)
 --bullets
-	for b in all(bullets) do
-		spr(16,b.x*10,b.y*15)
-	end
+	darw_bullets ()
+
 --bulles
-	for b in all(bulles) do
-		pset(b.x,b.y,b.col)
+	draw_bulles()
 	end
-end
 
 -->8
 --map
@@ -61,22 +56,28 @@ function create_player()
 	p={x=6,
 			y=4,
 			sprite=1,
-	 	--flip=false
+	 	flip=false
 	 }
 end
 
 function player_movement()
 newx=p.x
 newy=p.y
-		if (btnp(➡️)) newx+=1
-		if (btnp(⬅️)) newx-=1
+		if btnp(➡️) then 
+		 newx+=1
+			p.flip=true
+		end
+		if btnp(⬅️) then
+		 newx-=1
+			p.flip=false
+		end
 		if (btnp(⬆️)) newy-=1
 		if (btnp(⬇️)) newy+=1
 	
 --if not check_flag(0,newx,newy) then
 		p.x=newx --p.x= mid(0,newx,127)
-		p.y=newy
-		        --p.y= mid(0,newy,63)
+		p.y=newy	 --p.y= mid(0,newy,63)
+		       
 		if(p.x<0) p.x=0
 		if(p.y<0) p.y=0
 		if(p.x>127) p.x=127
@@ -85,7 +86,7 @@ newy=p.y
 end
 
 function draw_player()
-	spr(p.sprite,p.x*10,p.y*15,3,2)
+	spr(p.sprite,p.x*10,p.y*15,3,2,p.flip)
 end
 -->8
 --bullets
@@ -106,6 +107,17 @@ function update_bullets()
 	end
 end
 
+function update_shoot()
+	if btnp(❎) then
+	 shoot()
+	end
+end	
+
+function darw_bullets()
+		for b in all(bullets) do
+		spr(16,b.x*10,b.y*15)
+ 	end
+end
 -->8
 -- bulles
 
@@ -142,7 +154,11 @@ function update_bulles()
 end
 
 
-
+function draw_bulles()
+	for b in all(bulles) do
+		pset(b.x,b.y,b.col)
+	end
+end
 __gfx__
 0000000000555555500000000000000081111e882d11111100000000111111110000000000000000000000004411124161611111111111188887111111111111
 000000000566666665500000000000008111e81111d2111100000000311111110000000000000000000000001221121116111111111111881188711111111111
