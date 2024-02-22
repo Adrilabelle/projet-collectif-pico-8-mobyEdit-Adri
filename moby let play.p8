@@ -93,9 +93,10 @@ end
 
 function shoot ()
 	new_bullet= {
-		x=p.x,
-		y=p.y+.3,
-		speed=1
+		x=newx,
+		y=newy+0.3,
+		speed=0.4, 
+		flip=p.flip
 	}
 		add(bullets,new_bullet)
 		sfx(0)
@@ -103,7 +104,12 @@ end
 
 function update_bullets()
 	for b in all(bullets) do
-		b.x-=b.speed
+		if b.flip== false then		
+			b.x-=b.speed
+		else
+			b.x+=b.speed
+			b.x=b.x+2 			
+		end
 	end
 end
 
