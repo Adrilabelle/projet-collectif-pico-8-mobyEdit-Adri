@@ -133,8 +133,8 @@ function create_bulles()
 	new_bulles={
 		x=rnd(70),
 		y=rnd(128),
-			col=1,
-			speed=1+rnd(1)
+			col=5,
+			speed=0.3+rnd(0.3)
 			}
 			add(bulles,new_bulles)
 	end
@@ -143,7 +143,7 @@ function create_bulles()
 		x=rnd(128),
 		y=rnd(128),
 		col=rnd({7,12,6}),
-		speed=1+rnd(1)
+		speed=0.4+rnd(0.4)
 		}
 		add(bulles,new_bulles)
 	end
