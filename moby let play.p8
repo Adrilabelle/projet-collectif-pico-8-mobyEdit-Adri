@@ -4,28 +4,29 @@ __lua__
 function _init()
 	create_player()
 	bullets={}
-	create_bulles()
+	create_bubbles()
 end
 
 function _update()
 	player_movement()
 	update_shoot()
 	update_bullets()
-	update_bulles()
---	update_camera()
+	update_bubbles()
+	update_camera()
+	
 end
 
 function _draw()
-cls()
-draw_map()
-draw_player()
+	cls()
+ draw_map()
+ draw_player()
 
 --bullets
-	darw_bullets ()
+	draw_bullets ()
 
---bulles
-	draw_bulles()
-	end
+--bubbles
+	draw_bubbles()
+end
 
 -->8
 --map
@@ -33,6 +34,14 @@ function draw_map()
 	map(0,0,0,0,128,64)
 	sprite=64
 	end
+
+--camera
+
+function update_camera()
+	camx=mid(0,p.x-6,150-15)
+	camy=mid(0,p.y-6,64-15)
+	camera(camx*10,camy*15)
+end
 
 --function check_flag(flag,x,y)
 --	local sprite=mget(x,y)
@@ -98,17 +107,23 @@ function shoot ()
 		speed=0.4, 
 		flip=p.flip
 	}
+
 		add(bullets,new_bullet)
 		sfx(0)
 end
 
 function update_bullets()
+	if flip==true then 
+		b.x=b.x+2
+		
+	end
+		 
 	for b in all(bullets) do
 		if b.flip== false then		
 			b.x-=b.speed
 		else
 			b.x+=b.speed
-			b.x=b.x+2 			
+	--		b.x=b.x+2 			
 		end
 	end
 end
@@ -119,38 +134,38 @@ function update_shoot()
 	end
 end	
 
-function darw_bullets()
+function draw_bullets()
 		for b in all(bullets) do
 		spr(16,b.x*10,b.y*15)
  	end
 end
 -->8
--- bulles
+-- bubbles
 
-function create_bulles()
-	bulles={}
+function create_bubbles()
+	bubbles={}
 	for i=1,13 do
-	new_bulles={
+	new_bubbles={
 		x=rnd(70),
 		y=rnd(128),
 			col=5,
 			speed=0.3+rnd(0.3)
 			}
-			add(bulles,new_bulles)
+			add(bubbles,new_bubbles)
 	end
 	for i=1,18 do
-	new_bulles={
+	new_bubbles={
 		x=rnd(128),
 		y=rnd(128),
 		col=rnd({7,12,6}),
 		speed=0.4+rnd(0.4)
 		}
-		add(bulles,new_bulles)
+		add(bubbles,new_bubbles)
 	end
 end
 
-function update_bulles()
-	for b in all (bulles) do
+function update_bubbles()
+	for b in all (bubbles) do
 		b.y-=b.speed
 		if b.y < 0 then
 			b.y=rnd(128,0)
@@ -160,8 +175,8 @@ function update_bulles()
 end
 
 
-function draw_bulles()
-	for b in all(bulles) do
+function draw_bubbles()
+	for b in all(bubbles) do
 		pset(b.x,b.y,b.col)
 	end
 end
