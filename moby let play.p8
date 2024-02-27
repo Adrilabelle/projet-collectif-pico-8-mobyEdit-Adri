@@ -151,21 +151,21 @@ end
 
 function create_bubbles()
 	bubbles={}
-	for i=1,13 do
+	for i=1,20 do
 	new_bubbles={
-		x=rnd(70),
+		x=rnd(1016),
 		y=rnd(128),
 			col=5,
 			speed=0.3+rnd(0.3)
 			}
 			add(bubbles,new_bubbles)
 	end
-	for i=1,18 do
+	for i=1,40 do
 	new_bubbles={
-		x=rnd(128),
+		x=rnd(1016),
 		y=rnd(128),
 		col=rnd({7,12,6}),
-		speed=0.4+rnd(0.4)
+		speed=0.5+rnd(0.4)
 		}
 		add(bubbles,new_bubbles)
 	end
@@ -176,7 +176,7 @@ function update_bubbles()
 		b.y-=b.speed
 		if b.y < 0 then
 			b.y=rnd(128,0)
-			b.x=rnd(120)
+			b.x=rnd(1016)
 		end
 	end
 end
