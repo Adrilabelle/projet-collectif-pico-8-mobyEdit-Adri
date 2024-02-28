@@ -2,34 +2,59 @@ pico-8 cartridge // http://www.pico-8.com
 version 38
 __lua__
 function _init()
+--player
 	create_player()
+--bullets
 	bullets={}
-	fishes={}
-	dechets={}
-	create_dechet()
-	create_fish()
-	create_bubbles()
 	
+--dechets
+	dechets={}
+	dechets1={}
+	dechets2={}
+	dechets3={}
+	create_dechet()
+	create_dechet1()
+	create_dechet2()
+	create_dechet3()
+--fish
+ fishes={}
+	create_fish()
+--bubbles
+	create_bubbles()	
 end
 function _update()
+--player
 	player_movement()
+--fish
 	renew_fish()
 	fish_mouvement()
+--dechets
 	renew_dechet()
 	update_dechets()
+	update_dechets1()
+	update_dechets2()
+ update_dechets3()
+--bullet
 	update_shoot()
 	update_bullets()
+--bubbles
 	update_bubbles()
+--camera
 	update_camera()
-	
 end
 function _draw()
+--map
 	cls()
  draw_map()
+--player
  draw_player()
 --fish
  draw_fish()
+--dechets	
 	draw_dechet()
+	draw_dechet1()
+	draw_dechet2()
+	draw_dechet3()
 --bullets
 	draw_bullets ()
 --bubbles
@@ -41,20 +66,23 @@ function draw_map()
 	map(0,0,0,0,128,64)
 	sprite=64
 	end
-
 --camera
-
 function update_camera()
 	camx=mid(0,p.x-6,150-15)
 	camy=mid(0,p.y-6,64-15)
 	camera(camx*10,camy*15)
 end
-
 --function check_flag(flag,x,y)
 --	local sprite=mget(x,y)
 --	return fget(sprite,flag)
 --end
-
+--function update_camera()
+--camera(x,y)
+--end
+--function next_tile()
+--	sprite=mget(x,y)
+--	mset(x,y,sprite+1)
+--end	
 --function update_camera()
 --camera(x,y)
 --end
@@ -67,7 +95,6 @@ end
 	
 -->8
 --player
-
 function create_player()
 	p={x=6,
 			y=4,
@@ -75,11 +102,10 @@ function create_player()
 	 	flip=false
 	 }
 end
-
 function player_movement()
 newx=p.x
 newy=p.y
-		if btnp(➡️) then 
+		if btnp(➡️) then
 		 newx+=1
 			p.flip=true
 		end
@@ -93,38 +119,34 @@ newy=p.y
 --if not check_flag(0,newx,newy) then
 		p.x=newx --p.x= mid(0,newx,127)
 		p.y=newy	 --p.y= mid(0,newy,63)
-		       
+		      
 		if(p.x<0) p.x=0
 		if(p.y<0) p.y=0
 		if(p.x>100) p.x=100
 		if(p.y>7) p.y=7
 	--end
 end
-
 function draw_player()
 	spr(p.sprite,p.x*10,p.y*15,3,2,p.flip)
 end
 -->8
 --bullets
-
 function shoot ()
 	new_bullet= {
 		x=newx,
-		y=newy+0.3,
-		speed=0.4, 
+		y=newy+.3,
+		speed=0.5,
 		flip=p.flip
 	}
-		if new_bullet.flip==true then 
+		if new_bullet.flip==true then
 		new_bullet.x=new_bullet.x+2
  	end
 	
 		add(bullets,new_bullet)
 		sfx(0)
 end
-
 function update_bullets()
-
-		 
+		
 	for b in all(bullets) do
 		if b.flip== false then		
 			b.x-=b.speed
@@ -134,13 +156,11 @@ function update_bullets()
 		end
 	end
 end
-
 function update_shoot()
 	if btnp(❎) then
 	 shoot()
 	end
 end	
-
 function draw_bullets()
 		for b in all(bullets) do
 		spr(16,b.x*10,b.y*15)
@@ -148,7 +168,6 @@ function draw_bullets()
 end
 -->8
 -- bubbles
-
 function create_bubbles()
 	bubbles={}
 	for i=1,20 do
@@ -170,7 +189,6 @@ function create_bubbles()
 		add(bubbles,new_bubbles)
 	end
 end
-
 function update_bubbles()
 	for b in all (bubbles) do
 		b.y-=b.speed
@@ -180,8 +198,6 @@ function update_bubbles()
 		end
 	end
 end
-
-
 function draw_bubbles()
 	for b in all(bubbles) do
 		pset(b.x,b.y,b.col)
@@ -213,13 +229,36 @@ function renew_fish()
 	end
 end
 function draw_fish()
-	print(new_fish.x)
-	print(new_fish.y)
 	for f in all(fishes) do
 			spr(
 			f.sprite,
 			f.x,
+			f.y+10
+			)
+			spr(
+			f.sprite,
+			f.x+200,
+			f.y+32
+			)
+			spr(
+			f.sprite,
+			f.x+400,
+			f.y+15
+			)
+			spr(
+			f.sprite,
+			f.x+700,
+			f.y+40
+			)
+			spr(
+			f.sprite,
+			f.x+850,
 			f.y
+			)
+			spr(
+			f.sprite,
+			f.x+350,
+			f.y+5
 			)
 	end		
 end
@@ -227,47 +266,156 @@ end
 --dechet
 function create_dechet()
 	new_dechet={
-			x=60,
-			y=5,
+			x=8,
+			y=-2,
 			sprite=36,
-			speed=0.23
+			speed=0.01
 				--	life=3
 			}
 			add(dechets,new_dechet)
 end
-
 function update_dechets()
 	for e in all(dechets) do	
   -- e.x-=e.speed
-  if e.y<112 then
+  if e.y<7 then
    e.y+=e.speed
   end
 	end
 end	
-
-
 function renew_dechet()
 	if #dechets== 0 then
 			create_dechet()
 	end
 end
-
 function draw_dechet()
---	print(new_dechet.x)
---	print(new_dechet.y)
+ print(new_dechet.x)
+	print(new_dechet.y)
 	for f in all(dechets) do
-			spr(
-			f.sprite,
-			f.x,
-			f.y,
-			1,
-			2
-			)
+				spr(
+				f.sprite,
+				f.x*10,
+				f.y*15,
+				1,
+				2
+			 )
+	end		
+end
+-->8
+--dechet
+function create_dechet1()
+	new_dechet1={
+			x=30,
+			y=-4,
+			sprite=36,
+			speed=0.01
+				--	life=3
+			}
+			add(dechets1,new_dechet1)
+end
+function update_dechets1()
+	for e in all(dechets1) do	
+  -- e.x-=e.speed
+  if e.y<7 then
+   e.y+=e.speed
+  end
+	end
+end	
+function renew_dechet1()
+	if #dechets1== 0 then
+			create_dechet1()
+	end
+end
+function draw_dechet1()
+ print(new_dechet1.x)
+	print(new_dechet1.y)
+	for f in all(dechets1) do
+				spr(
+				f.sprite,
+				f.x*10,
+				f.y*15,
+				1,
+				2
+				)
+	end		
+end
+-->8
+--dechet
+function create_dechet2()
+	new_dechet2={
+			x=60,
+			y=-8,
+			sprite=36,
+			speed=0.01
+				--	life=3
+			}
+			add(dechets2,new_dechet2)
+end
+function update_dechets2()
+	for e in all(dechets2) do	
+  -- e.x-=e.speed
+  if e.y<7 then
+   e.y+=e.speed
+  end
+	end
+end	
+function renew_dechet()
+	if #dechets== 0 then
+			create_dechet2()
+	end
+end
+function draw_dechet2()
+ print(new_dechet2.x)
+	print(new_dechet2.y)
+	for f in all(dechets2) do
+				spr(
+				f.sprite,
+				f.x*10,
+				f.y*15,
+				1,
+				2
+				)
+	end		
+end
+-->8
+--dechet
+function create_dechet3()
+	new_dechet3={
+			x=90,
+			y=-12,
+			sprite=36,
+			speed=0.02
+				--	life=3
+			}
+			add(dechets3,new_dechet3)
+end
+function update_dechets3()
+	for e in all(dechets3) do	
+  -- e.x-=e.speed
+  if e.y<7 then
+   e.y+=e.speed
+  end
+	end
+end	
+function renew_dechet3()
+	if #dechets3== 0 then
+			create_dechet3()
+	end
+end
+function draw_dechet3()
+ print(new_dechet3.x)
+	print(new_dechet3.y)
+	for f in all(dechets3) do
+				spr(
+				f.sprite,
+				f.x*10,
+				f.y*15,
+				1,
+				2
+				)
 	end		
 end
 -->8
 --collision
-
 --function collision(a,b)
 --		if a.x>b.y
 --		or a.y>b.y+8
@@ -286,23 +434,6 @@ function collision(a,b)
 										or a.y+8<b.y
 										)
 end
-
---function colission2()
--- for b in all(bullets) do
--- 	if collision(e,b) then
--- 			del(bullets,b)
--- 			e.life-=1
--- 			if e.life==0 then
--- 				del(dechets,e)
--- 			end
--- 	end
--- end	 
-
-
-
-
-
-
 __gfx__
 0000000000555555500000000000000081111e882d1112d100000000111111110000000000000000000000004411124161611111111111188887111111111111
 000000000566666665500000000000008111e81111d2112d00000000311111110000000000000000000000001221121116111111111111881188711111111111
