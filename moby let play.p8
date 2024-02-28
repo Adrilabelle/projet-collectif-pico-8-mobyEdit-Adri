@@ -6,6 +6,10 @@ function _init()
 	create_player()
 --bullets
 	bullets={}
+	--message
+	init_msg()
+	--timer
+	timer_init()
 	
 --dechets
 	dechets={}
@@ -22,6 +26,7 @@ function _init()
 --bubbles
 	create_bubbles()	
 end
+
 function _update()
 --player
 	player_movement()
@@ -41,7 +46,12 @@ function _update()
 	update_bubbles()
 --camera
 	update_camera()
+	--message
+	update_msg()
+--timer
+	timer_update()
 end
+
 function _draw()
 --map
 	cls()
@@ -59,6 +69,11 @@ function _draw()
 	draw_bullets ()
 --bubbles
 	draw_bubbles()
+--message
+	draw_msg()
+--timer
+ timer_draw()
+
 end
 -->8
 --map
@@ -287,9 +302,8 @@ function renew_dechet()
 			create_dechet()
 	end
 end
+
 function draw_dechet()
- print(new_dechet.x)
-	print(new_dechet.y)
 	for f in all(dechets) do
 				spr(
 				f.sprite,
@@ -325,9 +339,8 @@ function renew_dechet1()
 			create_dechet1()
 	end
 end
+
 function draw_dechet1()
- print(new_dechet1.x)
-	print(new_dechet1.y)
 	for f in all(dechets1) do
 				spr(
 				f.sprite,
@@ -363,9 +376,8 @@ function renew_dechet()
 			create_dechet2()
 	end
 end
+
 function draw_dechet2()
- print(new_dechet2.x)
-	print(new_dechet2.y)
 	for f in all(dechets2) do
 				spr(
 				f.sprite,
@@ -401,9 +413,8 @@ function renew_dechet3()
 			create_dechet3()
 	end
 end
+
 function draw_dechet3()
- print(new_dechet3.x)
-	print(new_dechet3.y)
 	for f in all(dechets3) do
 				spr(
 				f.sprite,
@@ -416,16 +427,7 @@ function draw_dechet3()
 end
 -->8
 --collision
---function collision(a,b)
---		if a.x>b.y
---		or a.y>b.y+8
---		or a.x+8<b.x
---		or a.y+8<b.y then
---			return false
---		else
---			return true	
---		end
---end
+
 function collision(a,b)
 	return not (
 													a.x>b.y
@@ -434,6 +436,68 @@ function collision(a,b)
 										or a.y+8<b.y
 										)
 end
+-->8
+	--message
+
+function init_msg()
+	messages={}
+	create_msg("tape ❎ to continue","hello♥♥","my name is\nmoby!","let's play!")
+end
+
+function create_msg(name,...)
+	msg_title=name
+	messages={...}
+end
+	
+function update_msg()
+	if btnp(❎) then
+				
+	
+	deli(messages,1)
+		end
+	if #messages==0 then
+	player_movement()
+	end
+end
+
+function draw_msg()
+	if messages[1] then
+		local y=100
+		if p.y%16>=9 then
+			y=10
+		end
+		--titre
+		rectfill(2,y,11+#msg_title*4,y+7,3)
+		print(msg_title,6,y+2,11)
+		--message
+		rectfill(2,y+8,11+#msg_title*4,y+32,11)
+		print(messages[1],6,y+11,3)
+	end
+end
+-->8
+--timer
+function timer_init()
+	timer=0
+	print_timer=60
+end
+
+function timer_update()
+	timer+=1
+	if timer==30 then
+		print_timer-=1
+		timer=0
+	end
+end
+
+function timer_draw()
+	print ("timer:",p.x*10,1,14)
+	print (print_timer,p.x*10,8,14)
+	if print_timer==0 then
+		cls(14)
+		print ("time's up! game over",p.x+10,p.y+10,2)
+	end
+end
+
 __gfx__
 0000000000555555500000000000000081111e882d1112d100000000111111110000000000000000000000004411124161611111111111188887111111111111
 000000000566666665500000000000008111e81111d2112d00000000311111110000000000000000000000001221121116111111111111881188711111111111
